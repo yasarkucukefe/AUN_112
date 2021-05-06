@@ -2,10 +2,10 @@
 -- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Anamakine: 127.0.0.1
--- Üretim Zamanı: 08 Nis 2021, 15:29:54
--- Sunucu sürümü: 10.1.16-MariaDB
--- PHP Sürümü: 5.6.24
+-- Host: 127.0.0.1
+-- Generation Time: May 06, 2021 at 12:46 PM
+-- Server version: 10.1.16-MariaDB
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Veritabanı: `arackiralama`
+-- Database: `arackiralama`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `araclar`
+-- Table structure for table `araclar`
 --
 
 CREATE TABLE `araclar` (
@@ -32,22 +32,26 @@ CREATE TABLE `araclar` (
   `sene` smallint(6) DEFAULT NULL,
   `model` int(11) NOT NULL,
   `renk` int(11) NOT NULL,
-  `yakit` int(11) NOT NULL
+  `yakit` int(11) NOT NULL,
+  `tuketim` decimal(10,1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `araclar`
+-- Dumping data for table `araclar`
 --
 
-INSERT INTO `araclar` (`auto_id`, `plaka_no`, `sene`, `model`, `renk`, `yakit`) VALUES
-(1, '34 FB 1907', 2020, 8, 5, 2),
-(2, '34KL3012', 2019, 6, 4, 3),
-(3, '34BJK1903', 2021, 4, 5, 2);
+INSERT INTO `araclar` (`auto_id`, `plaka_no`, `sene`, `model`, `renk`, `yakit`, `tuketim`) VALUES
+(1, '34 FB 1907', 2020, 8, 5, 2, '4.2'),
+(2, '34KL3012', 2019, 6, 4, 3, '5.2'),
+(3, '34BJK1903', 2021, 4, 5, 2, '6.1'),
+(4, '59PY491', 2015, 3, 6, 2, '7.2'),
+(5, '06KL312', 2021, 8, 7, 5, '0.0'),
+(6, '34KY381', 2020, 3, 4, 3, '4.8');
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `firmalar`
+-- Table structure for table `firmalar`
 --
 
 CREATE TABLE `firmalar` (
@@ -56,7 +60,7 @@ CREATE TABLE `firmalar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `firmalar`
+-- Dumping data for table `firmalar`
 --
 
 INSERT INTO `firmalar` (`auto_id`, `firma_ad`) VALUES
@@ -74,35 +78,93 @@ INSERT INTO `firmalar` (`auto_id`, `firma_ad`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `firma_model`
+-- Table structure for table `firma_model`
 --
 
 CREATE TABLE `firma_model` (
   `auto_id` int(11) NOT NULL,
   `firma_id` int(11) NOT NULL,
-  `model` varchar(30) NOT NULL
+  `model` varchar(30) NOT NULL,
+  `koltuk_say` smallint(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `firma_model`
+-- Dumping data for table `firma_model`
 --
 
-INSERT INTO `firma_model` (`auto_id`, `firma_id`, `model`) VALUES
-(4, 1, 'Juke'),
-(3, 3, 'Linea'),
-(5, 4, 'Leon'),
-(2, 5, 'Focus'),
-(1, 6, 'A5'),
-(6, 7, 'C180'),
-(10, 8, 'S40'),
-(9, 8, 'V40'),
-(7, 9, 'Passat'),
-(8, 10, '5008');
+INSERT INTO `firma_model` (`auto_id`, `firma_id`, `model`, `koltuk_say`) VALUES
+(1, 6, 'A5', 4),
+(2, 5, 'Focus', 4),
+(3, 3, 'Linea', 4),
+(4, 1, 'Juke', 4),
+(5, 4, 'Leon', 4),
+(6, 7, 'C180', 4),
+(7, 9, 'Passat', 4),
+(8, 10, '5008', 4),
+(9, 8, 'V40', 4),
+(10, 8, 'S40', 4);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `renkler`
+-- Table structure for table `kiralamalar`
+--
+
+CREATE TABLE `kiralamalar` (
+  `auto_id` int(11) NOT NULL,
+  `musteri_id` int(11) NOT NULL,
+  `arac_id` int(11) NOT NULL,
+  `gunluk_kira_bedeli` float DEFAULT NULL,
+  `kiralama_tarihi` date DEFAULT NULL,
+  `kiralama_gun_say` int(11) DEFAULT NULL,
+  `teslim_tarihi` date DEFAULT NULL,
+  `km_baslangic` int(11) DEFAULT NULL,
+  `km_teslim` int(11) DEFAULT NULL,
+  `sehir_disi` tinyint(1) DEFAULT '0',
+  `kira_suresi_degisti` tinyint(1) DEFAULT '0',
+  `durum` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `kiralamalar`
+--
+
+INSERT INTO `kiralamalar` (`auto_id`, `musteri_id`, `arac_id`, `gunluk_kira_bedeli`, `kiralama_tarihi`, `kiralama_gun_say`, `teslim_tarihi`, `km_baslangic`, `km_teslim`, `sehir_disi`, `kira_suresi_degisti`, `durum`) VALUES
+(1, 2, 3, 250, '2021-04-29', 3, '2021-05-01', 20000, 22000, 0, 0, 1),
+(2, 4, 5, 270, '2021-04-29', 30, NULL, 18000, NULL, 1, 0, 1),
+(3, 7, 1, 550, '2021-04-30', 2, NULL, 26000, NULL, 0, 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `musteriler`
+--
+
+CREATE TABLE `musteriler` (
+  `auto_id` int(11) NOT NULL,
+  `musteri_ad` varchar(50) NOT NULL,
+  `telefon` varchar(15) NOT NULL,
+  `sehir` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `musteriler`
+--
+
+INSERT INTO `musteriler` (`auto_id`, `musteri_ad`, `telefon`, `sehir`) VALUES
+(1, 'ENES GASI', '5326855225', 'İSTANBUL'),
+(2, 'YAŞAR KÜÇÜKEFE', '855265545', 'TEKİRDAĞ'),
+(3, 'YASİN GÖKMEN ALTINDİREK', '85544552', 'İSTANBUL'),
+(4, 'NURULLAH ÖMER', '8569525456', 'MARDİN'),
+(5, 'MERCAN DAVULCU', '8665898265', 'İSTANBUL'),
+(6, 'BEYZA TAHİNCİOĞLU', '856856366', 'İSTANBUL'),
+(7, 'DİLAN BİLAL', '875695566', 'İSTANBUL'),
+(8, 'MERTACAN ECE', '5642664852', 'İSTANBUL');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `renkler`
 --
 
 CREATE TABLE `renkler` (
@@ -111,7 +173,7 @@ CREATE TABLE `renkler` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `renkler`
+-- Dumping data for table `renkler`
 --
 
 INSERT INTO `renkler` (`auto_id`, `renk`) VALUES
@@ -124,7 +186,7 @@ INSERT INTO `renkler` (`auto_id`, `renk`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `yakit_turleri`
+-- Table structure for table `yakit_turleri`
 --
 
 CREATE TABLE `yakit_turleri` (
@@ -133,21 +195,22 @@ CREATE TABLE `yakit_turleri` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `yakit_turleri`
+-- Dumping data for table `yakit_turleri`
 --
 
 INSERT INTO `yakit_turleri` (`auto_id`, `yakit_tipi`) VALUES
 (2, 'Benzin'),
 (1, 'Dizel'),
+(5, 'Elektrikli'),
 (4, 'Hibrit'),
 (3, 'LPG');
 
 --
--- Dökümü yapılmış tablolar için indeksler
+-- Indexes for dumped tables
 --
 
 --
--- Tablo için indeksler `araclar`
+-- Indexes for table `araclar`
 --
 ALTER TABLE `araclar`
   ADD PRIMARY KEY (`auto_id`),
@@ -157,68 +220,93 @@ ALTER TABLE `araclar`
   ADD KEY `yakit` (`yakit`);
 
 --
--- Tablo için indeksler `firmalar`
+-- Indexes for table `firmalar`
 --
 ALTER TABLE `firmalar`
   ADD PRIMARY KEY (`auto_id`),
   ADD UNIQUE KEY `firma_uq` (`firma_ad`);
 
 --
--- Tablo için indeksler `firma_model`
+-- Indexes for table `firma_model`
 --
 ALTER TABLE `firma_model`
   ADD PRIMARY KEY (`auto_id`),
   ADD UNIQUE KEY `firma_id` (`firma_id`,`model`);
 
 --
--- Tablo için indeksler `renkler`
+-- Indexes for table `kiralamalar`
+--
+ALTER TABLE `kiralamalar`
+  ADD PRIMARY KEY (`auto_id`),
+  ADD KEY `musteri_id` (`musteri_id`),
+  ADD KEY `arac_id` (`arac_id`);
+
+--
+-- Indexes for table `musteriler`
+--
+ALTER TABLE `musteriler`
+  ADD PRIMARY KEY (`auto_id`),
+  ADD UNIQUE KEY `musteri_ad` (`musteri_ad`);
+
+--
+-- Indexes for table `renkler`
 --
 ALTER TABLE `renkler`
   ADD PRIMARY KEY (`auto_id`),
   ADD UNIQUE KEY `renk_uq` (`renk`);
 
 --
--- Tablo için indeksler `yakit_turleri`
+-- Indexes for table `yakit_turleri`
 --
 ALTER TABLE `yakit_turleri`
   ADD PRIMARY KEY (`auto_id`),
   ADD UNIQUE KEY `yakit_tipi` (`yakit_tipi`);
 
 --
--- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- Tablo için AUTO_INCREMENT değeri `araclar`
+-- AUTO_INCREMENT for table `araclar`
 --
 ALTER TABLE `araclar`
-  MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
--- Tablo için AUTO_INCREMENT değeri `firmalar`
+-- AUTO_INCREMENT for table `firmalar`
 --
 ALTER TABLE `firmalar`
   MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
--- Tablo için AUTO_INCREMENT değeri `firma_model`
+-- AUTO_INCREMENT for table `firma_model`
 --
 ALTER TABLE `firma_model`
   MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
--- Tablo için AUTO_INCREMENT değeri `renkler`
+-- AUTO_INCREMENT for table `kiralamalar`
+--
+ALTER TABLE `kiralamalar`
+  MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `musteriler`
+--
+ALTER TABLE `musteriler`
+  MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT for table `renkler`
 --
 ALTER TABLE `renkler`
   MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
--- Tablo için AUTO_INCREMENT değeri `yakit_turleri`
+-- AUTO_INCREMENT for table `yakit_turleri`
 --
 ALTER TABLE `yakit_turleri`
-  MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `auto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
--- Dökümü yapılmış tablolar için kısıtlamalar
+-- Constraints for dumped tables
 --
 
 --
--- Tablo kısıtlamaları `araclar`
+-- Constraints for table `araclar`
 --
 ALTER TABLE `araclar`
   ADD CONSTRAINT `araclar_ibfk_1` FOREIGN KEY (`model`) REFERENCES `firma_model` (`auto_id`),
@@ -226,10 +314,17 @@ ALTER TABLE `araclar`
   ADD CONSTRAINT `araclar_ibfk_3` FOREIGN KEY (`yakit`) REFERENCES `yakit_turleri` (`auto_id`);
 
 --
--- Tablo kısıtlamaları `firma_model`
+-- Constraints for table `firma_model`
 --
 ALTER TABLE `firma_model`
   ADD CONSTRAINT `firma_model_ibfk_1` FOREIGN KEY (`firma_id`) REFERENCES `firmalar` (`auto_id`);
+
+--
+-- Constraints for table `kiralamalar`
+--
+ALTER TABLE `kiralamalar`
+  ADD CONSTRAINT `kiralamalar_ibfk_1` FOREIGN KEY (`musteri_id`) REFERENCES `musteriler` (`auto_id`),
+  ADD CONSTRAINT `kiralamalar_ibfk_2` FOREIGN KEY (`arac_id`) REFERENCES `araclar` (`auto_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
